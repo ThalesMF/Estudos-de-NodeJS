@@ -1,8 +1,10 @@
 const express = require("express");
-
+const UserModel = require("../src/models/user.model");
 const app = express();
 
-const port = 8080;
+app.use(express.json());
+
+const port = 800;
 
 // Rota GET simples
 
@@ -24,6 +26,16 @@ app.get("/users", (req, res) => {
   ];
 
   res.status(200).json(users);
+});
+
+app.post("/users", async (req, res) => {
+  try {
+    const user = await UserModel.create(req.body);
+
+    res.status(201).json(user);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 });
 
 app.listen(port);
